@@ -1,0 +1,18 @@
+description = """
+Project name: ${project.name}
+"""
+
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://nexus.arcsmed.at/content/repositories/homer.core/"
+    }
+}
+
+dependencies{
+    compile group: 'net.compartmental.code', name: 'minim', version: '2.2.2'
+    compile group: 'org.processing', name: 'core', version: '3.3.7'
+    compile group: 'gnu.io', name: 'rxtx', version: '2.1.7'
+}
