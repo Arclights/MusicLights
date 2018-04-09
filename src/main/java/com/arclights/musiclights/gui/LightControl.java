@@ -1,106 +1,68 @@
 package com.arclights.musiclights.gui;
 
-import com.arclights.musiclights.monitor.Monitor;
+import com.arclights.musiclights.core.LightRig;
+import javafx.geometry.HPos;
+import javafx.geometry.Orientation;
+import javafx.scene.control.Button;
+import javafx.scene.control.Control;
+import javafx.scene.control.Slider;
+import javafx.scene.control.TitledPane;
+import javafx.scene.layout.GridPane;
 
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Hashtable;
+public class LightControl extends GridPane {
+    private boolean powerOn = true;
 
-public class LightControl extends JPanel implements ActionListener,
-        ChangeListener {
-    private int controlNbr;
-    private Monitor monitor;
-    private JButton power;
-    private JButton reset;
-    private boolean powerOn;
-    private JSlider slider;
-    Hashtable<Integer, JLabel> sliderLabels;
+    public LightControl(int controlNbr, LightRig lightRig, String shortcut) {
+        setVgap(25);
 
-    public LightControl(int cellWidth, int controlNbr, Monitor monitor, String shortcut) {
-        getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke("control I"), "power");
-        Action powerAction = new powerAction();
-        getActionMap().put("power", powerAction);
-        setFocusable(true);
+        Button powerButton = createPowerButton(lightRig, controlNbr);
+        Button resetButton = createResetButton();
+        Control slider = createSlider(lightRig, controlNbr, resetButton);
 
-        this.monitor = monitor;
-        this.controlNbr = controlNbr;
-        setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        power = new JButton("OFF");
-        power.addActionListener(this);
-        add(power, c);
-
-        c.gridy++;
-        add(Box.createRigidArea(new Dimension(0, 25)), c);
-
-        c.gridy++;
-        reset = new JButton("Reset");
-        reset.addActionListener(this);
-        add(reset, c);
-
-        c.gridy++;
-        add(Box.createRigidArea(new Dimension(0, 25)), c);
-
-        sliderLabels = new Hashtable<Integer, JLabel>();
-        sliderLabels.put(new Integer(5), new JLabel("0.5"));
-        sliderLabels.put(new Integer(10), new JLabel("1"));
-        sliderLabels.put(new Integer(15), new JLabel("1.5"));
-        sliderLabels.put(new Integer(20), new JLabel("2"));
-        slider = new JSlider(JSlider.VERTICAL, 5, 20, 10);
-        slider.setBorder(BorderFactory.createTitledBorder("Amplification"));
-        slider.setPreferredSize(new Dimension(90, 200));
-        slider.setMajorTickSpacing(5);
-        slider.setMinorTickSpacing(1);
-        slider.setPaintTicks(true);
-        slider.setPaintLabels(true);
-        slider.setSnapToTicks(true);
-        slider.setLabelTable(sliderLabels);
-        slider.addChangeListener(this);
-        c.gridy++;
-        add(slider, c);
-
-        powerOn = true;
+        add(powerButton, 0, 0);
+        add(resetButton, 0, 1);
+        add(slider, 0, 2);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == power) {
+    private Button createPowerButton(LightRig lightRig, int controlNbr) {
+        Button power = new Button("OFF");
+        power.setOnAction(event -> {
             if (powerOn) {
                 powerOn = false;
-                monitor.turnPowerOff(controlNbr);
+                lightRig.turnPowerOff(controlNbr);
                 power.setText("ON");
             } else {
                 powerOn = true;
-                monitor.turnPowerOn(controlNbr);
+                lightRig.turnPowerOn(controlNbr);
                 power.setText("OFF");
             }
-        } else if (e.getSource() == reset) {
-            slider.setValue(10);
-        }
+        });
+        GridPane.setHalignment(power, HPos.CENTER);
 
+        return power;
     }
 
-    @Override
-    public void stateChanged(ChangeEvent e) {
-        if (e.getSource() == slider) {
-            monitor.setLevel(controlNbr, (float) (slider.getValue() * 0.1));
-        }
+    private Button createResetButton() {
+        Button reset = new Button("Reset");
+        GridPane.setHalignment(reset, HPos.CENTER);
 
+        return reset;
     }
 
-    class powerAction extends AbstractAction {
+    private Control createSlider(LightRig lightRig, int controlNbr, Button resetButton) {
+        Slider slider = new Slider(5, 20, 10);
+        slider.setMajorTickUnit(5);
+        slider.setMinorTickCount(1);
+        slider.setShowTickMarks(true);
+        slider.setShowTickLabels(true);
+        slider.setSnapToTicks(true);
+        slider.setOrientation(Orientation.VERTICAL);
+        slider.setOnDragDone(event -> lightRig.setLevel(controlNbr, (float) (slider.getValue() * 0.1)));
+        TitledPane sliderPane = new TitledPane("Amplification", slider);
+        sliderPane.setCollapsible(false);
+        resetButton.setOnAction(event -> slider.setValue(10));
 
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            System.out.println("Control " + controlNbr);
-
-        }
-
+        return sliderPane;
     }
+
 }

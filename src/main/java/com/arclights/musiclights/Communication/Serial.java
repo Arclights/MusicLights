@@ -1,6 +1,6 @@
 package com.arclights.musiclights.Communication;
 
-import com.arclights.musiclights.monitor.Monitor;
+import com.arclights.musiclights.core.LightRig;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
@@ -17,7 +17,7 @@ public class Serial extends Thread implements SerialPortEventListener {
 
     SerialPort serialPort;
 
-    private Monitor m;
+    private LightRig m;
 
     private static final String PORT_NAMES[] = {"/dev/tty.usbserial-A9007UX1",
             "dev/ttyUSB0", "COM14"};
@@ -40,7 +40,7 @@ public class Serial extends Thread implements SerialPortEventListener {
      */
     private static final int DATA_RATE = 9600;
 
-    public Serial(Monitor m) {
+    public Serial(LightRig m) {
         this.m = m;
     }
 

@@ -3,24 +3,36 @@ package com.arclights.musiclights.tool;
 import ddf.minim.AudioInput;
 import ddf.minim.Minim;
 import ddf.minim.analysis.FFT;
-import processing.core.PApplet;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 
-import javax.swing.*;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Arrays;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
-public class AnalyseFreq extends PApplet {
+public class AnalyseFreq extends Application {
     Minim minim;
     AudioInput in;
     FFT fft;
-    String windowName;
     float[] maxAmpPerFreqGroup;
+    private Timeline timeline;
 
-    public void setup() {
-        size(1000, 100, P3D);
-        textMode(SCREEN);
+    private Canvas canvas;
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        canvas = new Canvas(1000, 100);
+        GridPane root = new GridPane();
+        root.add(canvas, 0, 0);
+        Scene scene = new Scene(root);
 
         minim = new Minim(this);
         in = minim.getLineIn(Minim.STEREO);
@@ -28,18 +40,60 @@ public class AnalyseFreq extends PApplet {
 
         maxAmpPerFreqGroup = new float[fft.specSize() / 2];
 
-        rectMode(CORNERS);
-
         fft.linAverages(32);
-        windowName = "None";
+        primaryStage.setTitle("None");
+
+        scene.setOnKeyPressed(event -> {
+            switch (event.getCode()) {
+                case W:
+                    // a Hamming window can be used to shape the sample buffer that is
+                    // passed to the FFT
+                    // this can reduce the amount of noise in the spectrum
+                    fft.window(FFT.HAMMING);
+                    primaryStage.setTitle("Hamming");
+                case E:
+                    fft.window(FFT.NONE);
+                    primaryStage.setTitle("None");
+                case S:
+//            JFileChooser fc = new JFileChooser();
+//            int returnVal = fc.showSaveDialog(this);
+//            if (returnVal == JFileChooser.APPROVE_OPTION) {
+//                try {
+//                    FileWriter fstream = new FileWriter(fc.getSelectedFile()
+//                            .getAbsoluteFile());
+//                    BufferedWriter out = new BufferedWriter(fstream);
+//                    out.write(Arrays.toString(maxAmpPerFreqGroup));
+//                    out.close();
+//                } catch (IOException e) {
+//                    // TODO Auto-generated catch block
+//                    e.printStackTrace();
+//                }
+//            }
+            }
+        });
+
+        int drawFrequencyPerSecond = 24;
+        timeline = new Timeline(
+                new KeyFrame(
+                        Duration.seconds(0),
+                        event -> draw()
+                ),
+                new KeyFrame(Duration.millis(1000 / drawFrequencyPerSecond))
+        );
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+
+        primaryStage.setScene(scene);
+        primaryStage.sizeToScene();
+        primaryStage.show();
     }
 
     public void draw() {
-        background(0);
-        // stroke(255);
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.setFill(Color.BLACK);
+        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        // red
-        stroke(255, 0, 0);
+        gc.setStroke(Color.RED);
 
         // perform a forward FFT on the samples in jingle's mix buffer
         // note that if jingle were a MONO file, this would be the same as using
@@ -54,64 +108,35 @@ public class AnalyseFreq extends PApplet {
             }
 
             if (i == 25) {
-                // green
-                stroke(173, 255, 47);
+                gc.setStroke(Color.GREEN);
             } else if (i == 50) {
-                // Yellow
-                stroke(255, 255, 0);
+                gc.setStroke(Color.YELLOW);
             } else if (i == 75) {
-                // Orange
-                stroke(255, 165, 0);
+                gc.setStroke(Color.ORANGE);
             } else if (i == 100) {
-                // Pink
-                stroke(255, 20, 147);
+                gc.setStroke(Color.PINK);
             } else if (i == 125) {
-                // Cyan
-                stroke(0, 255, 255);
+                gc.setStroke(Color.CYAN);
             }
-
-            line(i, height, i, height - fft.getBand(i) * 4);
+            gc.strokeLine(i, canvas.getHeight(), i, canvas.getHeight() - fft.getBand(i) * 4);
         }
 
     }
 
-    public void keyReleased() {
-        if (key == 'w') {
-            // a Hamming window can be used to shape the sample buffer that is
-            // passed to the FFT
-            // this can reduce the amount of noise in the spectrum
-            fft.window(FFT.HAMMING);
-            windowName = "Hamming";
-        }
 
-        if (key == 'e') {
-            fft.window(FFT.NONE);
-            windowName = "None";
-        }
-
-        if (key == 's') {
-            JFileChooser fc = new JFileChooser();
-            int returnVal = fc.showSaveDialog(this);
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                try {
-                    FileWriter fstream = new FileWriter(fc.getSelectedFile()
-                            .getAbsoluteFile());
-                    BufferedWriter out = new BufferedWriter(fstream);
-                    out.write(Arrays.toString(maxAmpPerFreqGroup));
-                    out.close();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    public void stop() {
+    public void stop() throws Exception {
         // always close Minim audio classes when you finish with them
         // jingle.close();
         minim.stop();
 
         super.stop();
+    }
+
+    public String sketchPath(String fileName) {
+        return "";
+    }
+
+    public InputStream createInput(String fileName) throws FileNotFoundException {
+        return new FileInputStream(fileName);
     }
 }

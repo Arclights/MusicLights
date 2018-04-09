@@ -1,73 +1,60 @@
 package com.arclights.musiclights.gui;
 
-import ddf.minim.analysis.FFT;
-import processing.core.PApplet;
+import com.arclights.musiclights.core.LightRig;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
-public class FreqView extends PApplet {
-    private FFT fft;
-    private int nbrOfLights;
+import java.util.Observable;
+import java.util.Observer;
 
-    public FreqView(int nbrOfLights) {
-        this.nbrOfLights = nbrOfLights;
+public class FreqView extends Canvas implements Observer {
+    private LightRig lightRig;
+    private final float BAR_SCALE_FACTOR;
+
+    public FreqView(LightRig lightRig) {
+        super(1000, 100);
+        BAR_SCALE_FACTOR = ((float) getHeight()) / 1024;
+        this.lightRig = lightRig;
+        lightRig.addObserver(this);
     }
 
-    public void setup() {
-        size(1000, 100, P3D);
-        // rectMode(CORNERS);
-    }
+    public void draw(GraphicsContext gc) {
+        gc.setFill(Color.BLACK);
+        gc.fillRect(0, 0, getWidth(), getHeight());
 
-    @Override
-    public void draw() {
-        background(0);
-
-        if (fft != null) {
-            float spikeWidth = (float) (width / nbrOfLights * 2)
-                    / (float) (fft.specSize() / nbrOfLights);
-            for (int i = 0; i < fft.specSize() / 2; i++) {
-                if (i == 0) {
-                    // Red
-                    fill(255, 0, 0);
-                } else if (i == 25) {
-                    // Green
-                    fill(173, 255, 47);
-                } else if (i == 52) {
-                    // Yellow
-                    fill(255, 255, 0);
-                } else if (i == 77) {
-                    // Blue
-                    fill(0, 0, 255);
-                } else if (i == 102) {
-                    // Orange
-                    fill(255, 140, 0);
-                } else if (i == 128) {
-                    // Orange
-                    fill(255, 140, 0);
-                } else if (i == 152) {
-                    // Blue
-                    fill(0, 0, 255);
-                } else if (i == 178) {
-                    // Yellow
-                    fill(255, 255, 0);
-                } else if (i == 204) {
-                    // Green
-                    fill(173, 255, 47);
-                } else if (i == 230) {
-                    // Red
-                    fill(255, 0, 0);
-                }
-                rect(i * spikeWidth, height, spikeWidth, fft.getBand(i) * -4);
+        float spikeWidth = (float) (getWidth() / lightRig.getNbrOfLights() * 2)
+                / (float) (lightRig.getSpectrumSize() / lightRig.getNbrOfLights());
+        for (int i = 0; i < lightRig.getSpectrumSize() / 2; i++) {
+            if (i == 0) {
+                gc.setFill(Color.RED);
+            } else if (i == 25) {
+                gc.setFill(Color.GREEN);
+            } else if (i == 52) {
+                gc.setFill(Color.YELLOW);
+            } else if (i == 77) {
+                gc.setFill(Color.BLUE);
+            } else if (i == 102) {
+                gc.setFill(Color.ORANGE);
+            } else if (i == 128) {
+                gc.setFill(Color.ORANGE);
+            } else if (i == 152) {
+                gc.setFill(Color.BLUE);
+            } else if (i == 178) {
+                gc.setFill(Color.YELLOW);
+            } else if (i == 204) {
+                gc.setFill(Color.GREEN);
+            } else if (i == 230) {
+                gc.setFill(Color.RED);
             }
+            gc.fillRect(i * spikeWidth, getHeight() - (lightRig.getBand(i) * BAR_SCALE_FACTOR), spikeWidth, getHeight());
         }
 
     }
 
-    public void setFFT(FFT fft) {
-        this.fft = fft;
-    }
-
-    public void stop() {
-        // always close Minim audio classes when you finish with them
-        super.stop();
+    @Override
+    public void update(Observable o, Object arg) {
+        draw(getGraphicsContext2D());
     }
 
 }
