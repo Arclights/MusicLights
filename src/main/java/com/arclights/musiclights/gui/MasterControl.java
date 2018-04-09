@@ -59,8 +59,7 @@ public class MasterControl extends GridPane {
         slider.setMinorTickCount(1);
         slider.setShowTickMarks(true);
         slider.setShowTickLabels(true);
-        slider.setSnapToTicks(true);
-        slider.setOnDragDone(event -> lightRig.setMasterLevel((int) slider.getValue()));
+        slider.valueProperty().addListener((obsVal,oldVal,newVal) -> lightRig.setMasterLevel(newVal.intValue()));
         GridPane.setHalignment(slider, HPos.CENTER);
         add(pane, 0, 3);
     }
