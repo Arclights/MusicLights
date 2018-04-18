@@ -38,7 +38,7 @@ public class MasterControl extends GridPane {
     private RadioButton adaptAmp;
     private Button resetAdaptAmpButton;
 
-    public MasterControl(LightRig lightRig, Stage stage) {
+    MasterControl(LightRig lightRig, Stage stage) {
         this.lightRig = lightRig;
         setVgap(25);
 
@@ -51,15 +51,15 @@ public class MasterControl extends GridPane {
         GridPane.setHalignment(reset, HPos.CENTER);
         add(reset, 0, 2);
 
-        slider = new Slider(0, 10, 5);
+        slider = new Slider(0, 1, 0.1);
         TitledPane pane = new TitledPane("Amplification", slider);
         pane.setCollapsible(false);
         slider.setOrientation(Orientation.VERTICAL);
-        slider.setMajorTickUnit(5);
+        slider.setMajorTickUnit(0.1);
         slider.setMinorTickCount(1);
         slider.setShowTickMarks(true);
         slider.setShowTickLabels(true);
-        slider.valueProperty().addListener((obsVal,oldVal,newVal) -> lightRig.setMasterLevel(newVal.intValue()));
+        slider.valueProperty().addListener((obsVal,oldVal,newVal) -> lightRig.setMasterLevel(newVal.floatValue()));
         GridPane.setHalignment(slider, HPos.CENTER);
         add(pane, 0, 3);
     }

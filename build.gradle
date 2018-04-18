@@ -3,6 +3,7 @@ Project name: ${project.name}
 """
 
 apply plugin: 'java'
+apply plugin: 'kotlin'
 
 repositories {
     mavenCentral()
@@ -14,4 +15,17 @@ repositories {
 dependencies{
     compile group: 'net.compartmental.code', name: 'minim', version: '2.2.2'
     compile group: 'gnu.io', name: 'rxtx', version: '2.1.7'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+}
+
+buildscript {
+    ext.kotlin_version = '1.2.31'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
 }

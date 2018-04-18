@@ -56,7 +56,7 @@ public class LightControl extends GridPane {
         slider.setShowTickMarks(true);
         slider.setShowTickLabels(true);
         slider.setOrientation(Orientation.VERTICAL);
-        slider.valueProperty().addListener((obsVal,oldVal,newVal) -> lightRig.setLevel(controlNbr, newVal.floatValue() * 0.1f));
+        slider.valueProperty().addListener((obsVal,oldVal,newVal) -> lightRig.setIndividualLevel(controlNbr, newVal.floatValue() * 0.1f));
         TitledPane sliderPane = new TitledPane("Amplification", slider);
         sliderPane.setCollapsible(false);
         resetButton.setOnAction(event -> slider.setValue(10));

@@ -20,7 +20,7 @@ public class LightRig extends Observable {
     private float[] levels;
     private boolean[] powerOn;
     private int nbrOfLights;
-    private int masterLevel;
+    private float masterLevel;
     private int filter;
     private float[] ampLeveler;
     private boolean useAdapAmp;
@@ -118,7 +118,10 @@ public class LightRig extends Observable {
 
                 float level = largest.get(i) * masterLevel
                         * levels[i] * leveler;
+
                 currentFinalLevels[i] = level;
+            } else {
+                currentFinalLevels[i] = 0;
             }
         }
 
@@ -165,7 +168,7 @@ public class LightRig extends Observable {
      * @param lightNbr The number of the light for which the level is going to be set
      * @param level    The level the light is going t be set to
      */
-    public void setLevel(int lightNbr, float level) {
+    public void setIndividualLevel(int lightNbr, float level) {
         levels[lightNbr] = level;
     }
 
@@ -174,7 +177,7 @@ public class LightRig extends Observable {
      *
      * @param level
      */
-    public void setMasterLevel(int level) {
+    public void setMasterLevel(float level) {
         masterLevel = level;
     }
 

@@ -10,8 +10,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class MainWindow extends Application {
-    private LightBar lb;
-    private ControlPanel cp;
     private LightRig lightRig;
 
     private Timeline timeline;
@@ -21,7 +19,7 @@ public class MainWindow extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         primaryStage.setTitle("MusicLights");
         GridPane root = new GridPane();
         Scene scene = new Scene(root);
@@ -36,11 +34,11 @@ public class MainWindow extends Application {
         root.add(fv, 0, 0);
 
         // The lights
-        lb = new LightBar(lightRig, fv);
+        LightBar lb = new LightBar(lightRig);
         root.add(lb, 0, 1);
 
         // The controls
-        cp = new ControlPanel(lightRig);
+        ControlPanel cp = new ControlPanel(lightRig);
         root.add(cp, 0, 2);
 
         // Master Control
