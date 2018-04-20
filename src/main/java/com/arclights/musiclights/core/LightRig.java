@@ -59,7 +59,7 @@ public class LightRig extends Observable {
         minim = new Minim(this);
         in = minim.getLineIn(Minim.STEREO);
         diff = new Diff(in);
-        adaptAmp = new AdaptiveAmplification(in, nbrOfLights);
+        adaptAmp = new AdaptiveAmplification(nbrOfLights);
         fft = new FFT(in.bufferSize(), in.sampleRate());
         fft.linAverages(32);
         beat = new Beat(in, this);
