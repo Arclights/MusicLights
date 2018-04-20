@@ -1,11 +1,7 @@
 package com.arclights.musiclights.core;
 
 import com.arclights.musiclights.core.amplification.AdaptiveAmplification;
-import com.arclights.musiclights.core.filter.Beat;
-import com.arclights.musiclights.core.filter.ByGroup;
-import com.arclights.musiclights.core.filter.ByGroupAvrage;
-import com.arclights.musiclights.core.filter.Diff;
-import com.arclights.musiclights.gui.MasterControl;
+import com.arclights.musiclights.core.filter.*;
 import ddf.minim.AudioInput;
 import ddf.minim.Minim;
 import ddf.minim.analysis.FFT;
@@ -16,12 +12,14 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import static com.arclights.musiclights.core.filter.FilterType.BY_GROUP;
+
 public class LightRig extends Observable {
     private float[] levels;
     private boolean[] powerOn;
     private int nbrOfLights;
     private float masterLevel;
-    private int filter;
+    private FilterType filter;
     private float[] ampLeveler;
     private boolean useAdapAmp;
     private boolean resetAdaptLeveler;
@@ -56,7 +54,7 @@ public class LightRig extends Observable {
         useAdapAmp = false;
         resetAdaptLeveler = false;
         beatWithLevels = false;
-        filter = MasterControl.BY_GROUP;
+        filter = BY_GROUP;
 
         minim = new Minim(this);
         in = minim.getLineIn(Minim.STEREO);
@@ -75,16 +73,16 @@ public class LightRig extends Observable {
         fft.forward(in.mix);
         ArrayList<Float> largest = null;
         switch (filter) {
-            case MasterControl.BY_GROUP:
+            case BY_GROUP:
                 largest = ByGroup.filter(fft, nbrOfLights);
                 break;
-            case MasterControl.BASS:
+            case BASS:
                 largest = beat.filter(fft, nbrOfLights);
                 break;
-            case MasterControl.DIFF:
+            case DIFF:
                 largest = diff.filter(fft, nbrOfLights);
                 break;
-            case MasterControl.BY_GROUP_AVRAGE:
+            case BY_GROUP_AVRAGE:
                 largest = ByGroupAvrage.filter(fft, nbrOfLights);
         }
 
@@ -207,7 +205,7 @@ public class LightRig extends Observable {
      *
      * @param filter The main.java.filter to use
      */
-    public void setFilter(int filter) {
+    public void setFilter(FilterType filter) {
         this.filter = filter;
     }
 

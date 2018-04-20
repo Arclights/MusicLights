@@ -1,6 +1,7 @@
 package com.arclights.musiclights.gui;
 
 import com.arclights.musiclights.core.LightRig;
+import com.arclights.musiclights.gui.masterControl.MasterControl;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
