@@ -27,6 +27,10 @@ class FilterChooser(lightRig: LightRig) : TitledPane() {
         byGroupRadioButton.isSelected = true
         val byGroupAverageRadioButton = FilterRadioButton("By group average", true, BY_GROUP_AVRAGE, levelBox, lightRig)
         byGroupAverageRadioButton.toggleGroup = group
+        val fftLargestRadioButton = FilterRadioButton("FFT largest", true, FFT_LARGEST, levelBox, lightRig)
+        fftLargestRadioButton.toggleGroup = group
+        val fftByBandRadioButton = FilterRadioButton("FFT by band", true, FFT_BY_BAND, levelBox, lightRig)
+        fftByBandRadioButton.toggleGroup = group
         val differenceRadioButton = FilterRadioButton("Difference", true, DIFF, levelBox, lightRig)
         differenceRadioButton.toggleGroup = group
         val beatRadioButton = FilterRadioButton("Beat", false, BASS, levelBox, lightRig)
@@ -34,9 +38,11 @@ class FilterChooser(lightRig: LightRig) : TitledPane() {
 
         filters.add(byGroupRadioButton, 0, 0)
         filters.add(byGroupAverageRadioButton, 1, 0)
-        filters.add(differenceRadioButton, 0, 1, 1, 2)
-        filters.add(beatRadioButton, 1, 1)
-        filters.add(levelBox, 1, 2)
+        filters.add(fftLargestRadioButton, 0, 1)
+        filters.add(fftByBandRadioButton, 1, 1)
+        filters.add(differenceRadioButton, 0, 2, 1, 2)
+        filters.add(beatRadioButton, 1, 2)
+        filters.add(levelBox, 1, 3)
 
         content = filters
     }

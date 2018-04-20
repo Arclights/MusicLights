@@ -84,6 +84,13 @@ public class LightRig extends Observable {
                 break;
             case BY_GROUP_AVRAGE:
                 largest = ByGroupAvrage.filter(fft, nbrOfLights);
+                break;
+            case FFT_LARGEST:
+                largest = FFTFilter.getLargest(fft, nbrOfLights);
+                break;
+            case FFT_BY_BAND:
+                largest = FFTFilter.getByBand(fft, nbrOfLights);
+                break;
         }
 
 //        fv.setFFT(fft);

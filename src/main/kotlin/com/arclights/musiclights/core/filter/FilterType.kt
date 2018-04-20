@@ -5,5 +5,7 @@ enum class FilterType {
     BASS,
     ALT_BASS,
     DIFF,
-    BY_GROUP_AVRAGE
+    BY_GROUP_AVRAGE,
+    FFT_LARGEST,
+    FFT_BY_BAND
 }
