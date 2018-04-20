@@ -1,20 +1,20 @@
 package com.arclights.musiclights.gui.light
 
 import com.arclights.musiclights.core.LightRig
-import javafx.scene.canvas.GraphicsContext
+import javafx.scene.canvas.Canvas
 import javafx.scene.paint.Color
 import java.util.*
 
 data class Light(
-        private val gc: GraphicsContext,
         private val color: Color,
-        private val x: Double,
-        private val width: Double,
         private val index: Int,
         private val lightRig: LightRig
-) : Observer {
+) : Observer, Canvas() {
+
+    private val HEIGHT = 100.0
 
     init {
+        height = HEIGHT
         lightRig.addObserver(this)
     }
 
@@ -28,9 +28,9 @@ data class Light(
     }
 
     private fun draw(color: Color, alpha: Double) {
-        gc.fill = color
-        gc.globalAlpha = alpha
-        gc.fillRect(x, 0.0, width, 100.0)
+        graphicsContext2D.fill = color
+        graphicsContext2D.globalAlpha = alpha
+        graphicsContext2D.fillRect(0.0, 0.0, width, HEIGHT)
     }
 
 }
