@@ -17,14 +17,17 @@ class LightControl(lightNbr: Int, lightRig: LightRig, color: Color) : GridPane()
     init {
         vgap = 25.0
 
-        val light = Light(color, lightNbr, lightRig)
+        val freqView = FrequencyView(lightRig, lightNbr, color)
+        freqView.widthProperty().bind(widthProperty())
+        val light = LightView(color, lightNbr, lightRig)
         light.widthProperty().bind(widthProperty())
         val powerButton = PowerButton(lightRig, lightNbr)
         val slider = AmplificationSlider(lightRig, lightNbr)
 
-        add(light,0,0)
-        add(powerButton, 0, 1)
-        add(slider, 0, 2)
+        add(freqView, 0, 0)
+        add(light, 0, 1)
+        add(powerButton, 0, 2)
+        add(slider, 0, 3)
     }
 }
 

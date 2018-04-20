@@ -35,6 +35,8 @@ public class LightRig extends Observable {
 
     private float[] currentFinalLevels;
 
+    public static final float MAX_AMPLITUDE = 400;
+
     /**
      * Used by Arduino
      */

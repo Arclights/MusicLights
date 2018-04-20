@@ -5,7 +5,7 @@ import javafx.scene.canvas.Canvas
 import javafx.scene.paint.Color
 import java.util.*
 
-data class Light(
+data class LightView(
         private val color: Color,
         private val index: Int,
         private val lightRig: LightRig

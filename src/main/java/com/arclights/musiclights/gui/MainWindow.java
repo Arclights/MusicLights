@@ -30,16 +30,13 @@ public class MainWindow extends Application {
 //        s.initialize();
 //        s.start();
 
-        FreqView fv = new FreqView(lightRig);
-        root.add(fv, 0, 0);
-
         // The controls
         ControlPanel cp = new ControlPanel(lightRig);
-        root.add(cp, 0, 1);
+        root.add(cp, 0, 0);
 
         // Master Control
         MasterControl mc = new MasterControl(lightRig, primaryStage);
-        root.add(mc, 1, 0, 1, 2);
+        root.add(mc, 1, 0);
 
         root.autosize();
 
