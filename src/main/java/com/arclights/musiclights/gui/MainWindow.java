@@ -1,19 +1,27 @@
 package com.arclights.musiclights.gui;
 
 import com.arclights.musiclights.core.LightRig;
+import com.arclights.musiclights.gui.light.LightControl;
 import com.arclights.musiclights.gui.masterControl.MasterControl;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
+import java.util.stream.IntStream;
 
 public class MainWindow extends Application {
     private LightRig lightRig;
 
     private Timeline timeline;
+
+    private final Color[] colors = new Color[]{Color.RED, Color.GREEN, Color.YELLOW,
+            Color.BLUE, Color.ORANGE, Color.ORANGE, Color.BLUE, Color.YELLOW,
+            Color.GREEN, Color.RED};
 
     public MainWindow() {
         this.lightRig = new LightRig(10);
@@ -23,6 +31,8 @@ public class MainWindow extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("MusicLights");
         GridPane root = new GridPane();
+        root.setHgap(1);
+
         Scene scene = new Scene(root);
 
 
@@ -32,12 +42,14 @@ public class MainWindow extends Application {
 //        s.start();
 
         // The controls
-        ControlPanel cp = new ControlPanel(lightRig);
-        root.add(cp, 0, 0);
+        IntStream.range(0, lightRig.getNbrOfLights()).forEach(i -> {
+            LightControl control = new LightControl(i, lightRig, colors[i]);
+            root.add(control, i, 0);
+        });
 
         // Master Control
         MasterControl mc = new MasterControl(lightRig, primaryStage);
-        root.add(mc, 1, 0);
+        root.add(mc, lightRig.getNbrOfLights(), 0);
 
         root.autosize();
 

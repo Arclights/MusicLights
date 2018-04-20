@@ -16,14 +16,15 @@ class FilterChooser(lightRig: LightRig) : TitledPane() {
         isCollapsible = false
 
         val filters = GridPane()
-        filters.hgap=5.0
-        filters.vgap=5.0
+        filters.hgap = 5.0
+        filters.vgap = 5.0
 
         val group = ToggleGroup()
 
         val levelBox = LevelCheckBox(lightRig)
         val byGroupRadioButton = FilterRadioButton("By group", true, BY_GROUP, levelBox, lightRig)
         byGroupRadioButton.toggleGroup = group
+        byGroupRadioButton.isSelected = true
         val byGroupAverageRadioButton = FilterRadioButton("By group average", true, BY_GROUP_AVRAGE, levelBox, lightRig)
         byGroupAverageRadioButton.toggleGroup = group
         val differenceRadioButton = FilterRadioButton("Difference", true, DIFF, levelBox, lightRig)
