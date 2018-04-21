@@ -3,7 +3,7 @@ package com.arclights.musiclights.core.amplification
 import com.arclights.musiclights.core.LightRig
 import ddf.minim.analysis.FFT
 
-class AdaptiveAmplification(val nbrOfGroups: Int) {
+class AdaptiveAmplification(private val nbrOfGroups: Int) {
     private val noiseLine = doubleArrayOf(454.1341, 985.9705, 936.9573, 2589.1023, 2526.0164, 4455.165, 3321.9583, 4226.0024, 10840.993, 11465.399)
 
     private val levelers = FloatArray(nbrOfGroups, { _ -> 0.0f })

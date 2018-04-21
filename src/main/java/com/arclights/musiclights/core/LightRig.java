@@ -9,7 +9,7 @@ import ddf.minim.analysis.FFT;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 
 import static com.arclights.musiclights.core.filter.FilterType.BY_GROUP;
@@ -71,10 +71,10 @@ public class LightRig extends Observable {
 
     public void update() {
         fft.forward(in.mix);
-        ArrayList<Float> largest = null;
+        List<Float> largest = null;
         switch (filter) {
             case BY_GROUP:
-                largest = ByGroup.filter(fft, nbrOfLights);
+                largest = ByGroup.Companion.filter(fft, nbrOfLights);
                 break;
             case BASS:
                 largest = beat.filter(fft, nbrOfLights);
