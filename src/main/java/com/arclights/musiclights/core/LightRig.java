@@ -59,7 +59,7 @@ public class LightRig extends Observable {
         minim = new Minim(this);
         in = minim.getLineIn(Minim.STEREO);
         fft = new FFT(in.bufferSize(), in.sampleRate());
-        fft.linAverages(32);
+        fft.linAverages(nbrOfLights);
         diff = new Diff(fft);
         adaptAmp = new AdaptiveAmplification(nbrOfLights);
         beat = new Beat(in, this);
@@ -86,10 +86,10 @@ public class LightRig extends Observable {
                 largest = ByGroupAverage.Companion.filter(fft, nbrOfLights);
                 break;
             case FFT_LARGEST:
-                largest = FFTFilter.getLargest(fft, nbrOfLights);
+                largest = FFTFilter.Companion.getLargest(fft, nbrOfLights);
                 break;
             case FFT_BY_BAND:
-                largest = FFTFilter.getByBand(fft, nbrOfLights);
+                largest = FFTFilter.Companion.getByGroup(fft, nbrOfLights);
                 break;
         }
 
