@@ -83,7 +83,7 @@ public class LightRig extends Observable {
                 largest = diff.filter(nbrOfLights);
                 break;
             case BY_GROUP_AVRAGE:
-                largest = ByGroupAvrage.filter(fft, nbrOfLights);
+                largest = ByGroupAverage.Companion.filter(fft, nbrOfLights);
                 break;
             case FFT_LARGEST:
                 largest = FFTFilter.getLargest(fft, nbrOfLights);
