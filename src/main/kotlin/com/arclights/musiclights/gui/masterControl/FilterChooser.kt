@@ -1,8 +1,13 @@
 package com.arclights.musiclights.gui.masterControl
 
-import com.arclights.musiclights.core.LightRig
+import com.arclights.musiclights.core.LightConfig
 import com.arclights.musiclights.core.filter.FilterType
-import com.arclights.musiclights.core.filter.FilterType.*
+import com.arclights.musiclights.core.filter.FilterType.BASS
+import com.arclights.musiclights.core.filter.FilterType.BY_GROUP
+import com.arclights.musiclights.core.filter.FilterType.BY_GROUP_AVRAGE
+import com.arclights.musiclights.core.filter.FilterType.DIFF
+import com.arclights.musiclights.core.filter.FilterType.FFT_BY_BAND
+import com.arclights.musiclights.core.filter.FilterType.FFT_LARGEST
 import javafx.event.EventHandler
 import javafx.scene.control.CheckBox
 import javafx.scene.control.RadioButton
@@ -10,7 +15,7 @@ import javafx.scene.control.TitledPane
 import javafx.scene.control.ToggleGroup
 import javafx.scene.layout.GridPane
 
-class FilterChooser(lightRig: LightRig) : TitledPane() {
+class FilterChooser(config: LightConfig) : TitledPane() {
     init {
         text = "Filters"
         isCollapsible = false
@@ -21,19 +26,19 @@ class FilterChooser(lightRig: LightRig) : TitledPane() {
 
         val group = ToggleGroup()
 
-        val levelBox = LevelCheckBox(lightRig)
-        val byGroupRadioButton = FilterRadioButton("By group", true, BY_GROUP, levelBox, lightRig)
+        val levelBox = LevelCheckBox(config)
+        val byGroupRadioButton = FilterRadioButton("By group", true, BY_GROUP, levelBox, config)
         byGroupRadioButton.toggleGroup = group
         byGroupRadioButton.isSelected = true
-        val byGroupAverageRadioButton = FilterRadioButton("By group average", true, BY_GROUP_AVRAGE, levelBox, lightRig)
+        val byGroupAverageRadioButton = FilterRadioButton("By group average", true, BY_GROUP_AVRAGE, levelBox, config)
         byGroupAverageRadioButton.toggleGroup = group
-        val fftLargestRadioButton = FilterRadioButton("FFT largest", true, FFT_LARGEST, levelBox, lightRig)
+        val fftLargestRadioButton = FilterRadioButton("FFT largest", true, FFT_LARGEST, levelBox, config)
         fftLargestRadioButton.toggleGroup = group
-        val fftByBandRadioButton = FilterRadioButton("FFT by band", true, FFT_BY_BAND, levelBox, lightRig)
+        val fftByBandRadioButton = FilterRadioButton("FFT by band", true, FFT_BY_BAND, levelBox, config)
         fftByBandRadioButton.toggleGroup = group
-        val differenceRadioButton = FilterRadioButton("Difference", true, DIFF, levelBox, lightRig)
+        val differenceRadioButton = FilterRadioButton("Difference", true, DIFF, levelBox, config)
         differenceRadioButton.toggleGroup = group
-        val beatRadioButton = FilterRadioButton("Beat", false, BASS, levelBox, lightRig)
+        val beatRadioButton = FilterRadioButton("Beat", false, BASS, levelBox, config)
         beatRadioButton.toggleGroup = group
 
         filters.add(byGroupRadioButton, 0, 0)
@@ -53,21 +58,21 @@ class FilterRadioButton(
         disableLevelBox: Boolean,
         filterType: FilterType,
         levelBox: LevelCheckBox,
-        lightRig: LightRig
+        config: LightConfig
 ) : RadioButton() {
     init {
         this.text = text
-        onAction = EventHandler { _ ->
+        onAction = EventHandler {
             levelBox.isDisable = disableLevelBox
-            lightRig.setFilter(filterType)
+            config.filter = filterType
         }
     }
 }
 
-class LevelCheckBox(lightRig: LightRig) : CheckBox() {
+class LevelCheckBox(config: LightConfig) : CheckBox() {
     init {
         text = "Levels"
         isDisable = true
-        onAction = EventHandler { _ -> lightRig.beatWithLevels = this.isSelected }
+        onAction = EventHandler { config.beatWithLevels = this.isSelected }
     }
 }

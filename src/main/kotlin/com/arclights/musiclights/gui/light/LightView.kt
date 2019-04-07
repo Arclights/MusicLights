@@ -19,7 +19,7 @@ data class LightView(
     }
 
     override fun update(o: Observable?, arg: Any?) {
-        draw(lightRig.currentLevels[index].toDouble())
+        draw((arg as FloatArray)[index].toDouble())
     }
 
     fun draw(level: Double) {

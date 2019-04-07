@@ -3,12 +3,12 @@ package com.arclights.musiclights.core.amplification
 import com.arclights.musiclights.core.LightRig
 import ddf.minim.analysis.FFT
 
-class AdaptiveAmplification(private val nbrOfGroups: Int) {
+class AdaptiveAmplifier(private val nbrOfGroups: Int) : Amplifier {
     private val noiseLine = doubleArrayOf(454.1341, 985.9705, 936.9573, 2589.1023, 2526.0164, 4455.165, 3321.9583, 4226.0024, 10840.993, 11465.399)
 
-    private val levelers = FloatArray(nbrOfGroups, { _ -> 0.0f })
+    private val levelers = FloatArray(nbrOfGroups) { 0.0f }
 
-    fun setLeveler(fft: FFT) {
+    override fun update(fft: FFT) {
         val spectrumWidth = fft.specSize() / 2
         val bandsPerGroup = spectrumWidth / nbrOfGroups
         (0 until nbrOfGroups).forEach {
@@ -27,7 +27,13 @@ class AdaptiveAmplification(private val nbrOfGroups: Int) {
         }
     }
 
-    fun getLeveler(index: Int) = levelers[index]
+    override fun getLevel(index: Int): Float = levelers[index]
 
-    fun reset() = levelers.fill(0.0f)
+    override fun reset() = levelers.fill(0.0f)
+
+    override fun size(): Int = levelers.size
+
+    override fun setLevel(index: Int, level: Float) {
+        // Do nothing
+    }
 }

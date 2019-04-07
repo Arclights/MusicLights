@@ -3,11 +3,12 @@ package com.arclights.musiclights.core.filter
 import com.arclights.musiclights.core.LightRig
 import ddf.minim.AudioInput
 import ddf.minim.analysis.BeatDetect
+import ddf.minim.analysis.FFT
 
-class Beat(val lightRig: LightRig, val input: AudioInput) {
-    private val beatDetector = BeatDetect(input.bufferSize(), input.sampleRate())
+class Beat(private val nbrOfLights: Int, bufferSize: Int, sampleRate: Float) : Filter {
+    private val beatDetector = BeatDetect(bufferSize, sampleRate)
 
-    fun filter(nbrOfLights: Int): List<Float> {
+    override fun filter(fft: FFT, input: AudioInput): List<Float> {
         beatDetector.detect(input.mix)
         val bandsPerLight = beatDetector.detectSize() / nbrOfLights
         return (0 until nbrOfLights)

@@ -1,5 +1,6 @@
 package com.arclights.musiclights.gui.light
 
+import com.arclights.musiclights.core.LightConfig
 import com.arclights.musiclights.core.LightRig
 import javafx.event.EventHandler
 import javafx.geometry.HPos
@@ -21,7 +22,7 @@ class LightControl(lightNbr: Int, lightRig: LightRig, color: Color) : GridPane()
         freqView.widthProperty().bind(widthProperty())
         val light = LightView(color, lightNbr, lightRig)
         light.widthProperty().bind(widthProperty())
-        val powerButton = PowerButton(lightRig, lightNbr)
+        val powerButton = PowerButton(lightRig.config, lightNbr)
         val slider = AmplificationSlider(lightRig, lightNbr)
 
         add(freqView, 0, 0)
@@ -31,19 +32,19 @@ class LightControl(lightNbr: Int, lightRig: LightRig, color: Color) : GridPane()
     }
 }
 
-class PowerButton(lightRig: LightRig, lightNbr: Int) : Button() {
+class PowerButton(config: LightConfig, lightNbr: Int) : Button() {
     private var powerOn = true
 
     init {
         text = "OFF"
-        onAction = EventHandler { _ ->
+        onAction = EventHandler {
             if (powerOn) {
                 powerOn = false
-                lightRig.turnPowerOff(lightNbr)
+                config.turnPowerOff(lightNbr)
                 text = "ON"
             } else {
                 powerOn = true
-                lightRig.turnPowerOn(lightNbr)
+                config.turnPowerOn(lightNbr)
                 text = "OFF"
             }
         }
@@ -73,7 +74,7 @@ class AmplificationSlider(lightRig: LightRig, lightNbr: Int) : TitledPane() {
         box.children.addAll(ResetButton(slider), slider)
         box.alignment = Pos.CENTER
 
-        text = "Amplification"
+        text = "Amplifier"
         content = box
         isCollapsible = false
     }

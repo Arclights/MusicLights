@@ -3,6 +3,9 @@ package com.arclights.musiclights.tool;
 import ddf.minim.AudioInput;
 import ddf.minim.Minim;
 import ddf.minim.analysis.FFT;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -13,10 +16,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 
 public class AnalyseFreq extends Application {
     Minim minim;

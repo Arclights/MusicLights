@@ -1,6 +1,6 @@
 package com.arclights.musiclights.gui.masterControl
 
-import com.arclights.musiclights.core.LightRig
+import com.arclights.musiclights.core.LightConfig
 import javafx.event.EventHandler
 import javafx.geometry.HPos
 import javafx.geometry.Orientation
@@ -11,11 +11,11 @@ import javafx.scene.control.TitledPane
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.VBox
 
-class AmplitudeSlider(lightRig: LightRig) : TitledPane() {
+class AmplitudeSlider(config: LightConfig) : TitledPane() {
     private val slider: Slider = Slider(0.0, 1.0, 0.1)
 
     init {
-        text = "Amplification"
+        text = "Amplifier"
         isCollapsible = false
 
         slider.orientation = Orientation.VERTICAL
@@ -23,7 +23,7 @@ class AmplitudeSlider(lightRig: LightRig) : TitledPane() {
         slider.minorTickCount = 1
         slider.isShowTickMarks = true
         slider.isShowTickLabels = true
-        slider.valueProperty().addListener { _, _, newVal -> lightRig.setMasterLevel(newVal.toFloat()) }
+        slider.valueProperty().addListener { _, _, newVal -> config.masterLevel = newVal.toFloat() }
 
         val box = VBox()
         box.children.addAll(ResetButton(this), slider)

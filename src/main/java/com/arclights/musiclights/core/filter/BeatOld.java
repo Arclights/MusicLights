@@ -3,7 +3,6 @@ package com.arclights.musiclights.core.filter;
 import com.arclights.musiclights.core.LightRig;
 import ddf.minim.AudioInput;
 import ddf.minim.analysis.FFT;
-
 import java.util.ArrayList;
 
 public class BeatOld {
@@ -46,7 +45,7 @@ public class BeatOld {
             }
             if (Es[largestAmpInGroupIndex] > sense
                     * getAvrageBufferEnergy(largestAmpInGroupIndex)) {
-                if (lightRig.getBeatWithLevels()) {
+                if (lightRig.getConfig().getBeatWithLevels()) {
                     res.add(Es[largestAmpInGroupIndex]);
                 } else {
                     res.add((float) 1);
