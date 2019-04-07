@@ -5,7 +5,7 @@ import ddf.minim.AudioInput
 import ddf.minim.analysis.BeatDetect
 import ddf.minim.analysis.FFT
 
-class Beat(private val nbrOfLights: Int, bufferSize: Int, sampleRate: Float) : Filter {
+class BeatByFrequency(private val nbrOfLights: Int, bufferSize: Int, sampleRate: Float) : Filter {
     private val beatDetector = BeatDetect(bufferSize, sampleRate)
 
     override fun filter(fft: FFT, input: AudioInput): List<Float> {

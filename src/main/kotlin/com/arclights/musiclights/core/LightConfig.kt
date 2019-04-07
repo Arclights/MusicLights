@@ -3,7 +3,8 @@ package com.arclights.musiclights.core
 import com.arclights.musiclights.core.amplification.AdaptiveAmplifier
 import com.arclights.musiclights.core.amplification.Amplifier
 import com.arclights.musiclights.core.amplification.ConstantAmplifier
-import com.arclights.musiclights.core.filter.Beat
+import com.arclights.musiclights.core.filter.BeatByEnergy
+import com.arclights.musiclights.core.filter.BeatByFrequency
 import com.arclights.musiclights.core.filter.ByGroup
 import com.arclights.musiclights.core.filter.ByGroupAverage
 import com.arclights.musiclights.core.filter.Diff
@@ -27,7 +28,8 @@ class LightConfig(
     var beatWithLevels: Boolean = false
 
     private val byGroup = ByGroup(nbrOfLights)
-    private val beat = Beat(nbrOfLights, bufferSize, sampleRate)
+    private val beatByFrequency = BeatByFrequency(nbrOfLights, bufferSize, sampleRate)
+    private val beatByEnergy = BeatByEnergy(nbrOfLights)
     private val diff = Diff(nbrOfLights, specSize)
     private val byGroupAverage = ByGroupAverage(nbrOfLights)
     private val fftFilterLargest = FFTFilterLargest(nbrOfLights)
@@ -38,7 +40,8 @@ class LightConfig(
 
     fun getFilter(): Filter = when (filter) {
         FilterType.BY_GROUP -> byGroup
-        FilterType.BASS -> beat
+        FilterType.BEAT_BY_FREQ -> beatByFrequency
+        FilterType.BEAT_BY_ENERGY -> beatByEnergy
         FilterType.DIFF -> diff
         FilterType.BY_GROUP_AVRAGE -> byGroupAverage
         FilterType.FFT_LARGEST -> fftFilterLargest
