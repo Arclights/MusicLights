@@ -1,8 +1,11 @@
 package com.arclights.musiclights.gui.light
 
 import com.arclights.musiclights.core.LightRig
+import com.arclights.musiclights.core.listeners.LIGHT_UPDATE
+import com.arclights.musiclights.core.listeners.LightChangeListener
 import javafx.scene.canvas.Canvas
 import javafx.scene.paint.Color
+import java.beans.PropertyChangeEvent
 import java.util.*
 import kotlin.math.min
 
@@ -11,13 +14,13 @@ class FrequencyView(
         private val lightRig: LightRig,
         private val lightNbr: Int,
         private val color: Color
-) : Observer, Canvas() {
+) : LightChangeListener, Canvas() {
     private val HEIGHT = 200.0
     private val scaleFactor = (HEIGHT / LightRig.MAX_AMPLITUDE).toFloat()
 
     init {
         height = HEIGHT
-        lightRig.addObserver(this)
+        lightRig.addLightChangeListener(this)
     }
 
     private fun draw() {
@@ -40,8 +43,10 @@ class FrequencyView(
 
     private fun scaleAmplitude(amplitude: Float) = min(amplitude * scaleFactor, LightRig.MAX_AMPLITUDE)
 
-    override fun update(o: Observable?, arg: Any?) {
-        draw()
+    override fun propertyChange(evt: PropertyChangeEvent?) {
+        if(evt?.propertyName == LIGHT_UPDATE){
+            draw()
+        }
     }
 
     @Deprecated("Get from Light object instead", ReplaceWith("light.?"))

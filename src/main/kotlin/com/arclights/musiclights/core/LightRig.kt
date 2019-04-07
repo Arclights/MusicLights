@@ -1,15 +1,17 @@
 package com.arclights.musiclights.core
 
 import com.arclights.musiclights.core.amplification.AdaptiveAmplifier
+import com.arclights.musiclights.core.listeners.LIGHT_UPDATE
+import com.arclights.musiclights.core.listeners.LightChangeListener
 import ddf.minim.AudioInput
 import ddf.minim.Minim
 import ddf.minim.analysis.FFT
+import java.beans.PropertyChangeSupport
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.InputStream
-import java.util.Observable
 
-class LightRig(val nbrOfLights: Int) : Observable() {
+class LightRig(val nbrOfLights: Int) {
     private val levels: FloatArray = FloatArray(nbrOfLights) { 1f }
     private var resetAdaptLeveler = false
     private val minim: Minim = Minim(this)
@@ -20,6 +22,8 @@ class LightRig(val nbrOfLights: Int) : Observable() {
     val config: LightConfig
 
     private val currentLevels: FloatArray
+
+    private val propertyChangeSupport = PropertyChangeSupport(this)
 
     /**
      * Used by Arduino
@@ -41,6 +45,10 @@ class LightRig(val nbrOfLights: Int) : Observable() {
         currentLevels = FloatArray(nbrOfLights)
     }
 
+    fun addLightChangeListener(listener: LightChangeListener) {
+        propertyChangeSupport.addPropertyChangeListener(listener)
+    }
+
     fun update() {
         fft.forward(input.mix)
 
@@ -57,6 +65,8 @@ class LightRig(val nbrOfLights: Int) : Observable() {
 
         amplifier.update(fft)
 
+        val tempLevels = currentLevels.copyOf()
+
         for (i in 0 until nbrOfLights) {
             if (config.powerOn[i]) {
                 val amplificationLevel = amplifier.getLevel(i)
@@ -67,8 +77,7 @@ class LightRig(val nbrOfLights: Int) : Observable() {
             }
         }
 
-        setChanged()
-        notifyObservers(currentLevels)
+        propertyChangeSupport.firePropertyChange(LIGHT_UPDATE, tempLevels, currentLevels)
     }
 
     fun getBand(i: Int): Float {
