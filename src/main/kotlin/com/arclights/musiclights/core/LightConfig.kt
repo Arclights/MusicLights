@@ -14,14 +14,11 @@ import com.arclights.musiclights.core.filter.Filter
 import com.arclights.musiclights.core.filter.FilterType
 
 class LightConfig(
-        private val nbrOfLights: Int,
+        nbrOfLights: Int,
         bufferSize: Int,
         sampleRate: Float,
         specSize: Int
 ) {
-    val powerOn: BooleanArray = BooleanArray(nbrOfLights) { true }
-
-
     var masterLevel = 5f
     var filter = FilterType.BY_GROUP
     var useAdapAmp: Boolean = false
@@ -47,24 +44,6 @@ class LightConfig(
         FilterType.FFT_LARGEST -> fftFilterLargest
         FilterType.FFT_BY_BAND -> fftFilterByBand
         FilterType.ALT_BASS -> TODO()
-    }
-
-    /**
-     * Turns on the specified light so it is seen input the LightBar
-     *
-     * @param lightNbr The number of the light input question
-     */
-    fun turnPowerOn(lightNbr: Int) {
-        powerOn[lightNbr] = true
-    }
-
-    /**
-     * Turns off the specified light
-     *
-     * @param lightNbr The number of the light input question
-     */
-    fun turnPowerOff(lightNbr: Int) {
-        powerOn[lightNbr] = false
     }
 
     fun getAmplifier(): Amplifier = if (useAdapAmp) {

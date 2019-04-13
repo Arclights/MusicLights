@@ -1,37 +1,40 @@
 package com.arclights.musiclights.gui.light
 
+import com.arclights.musiclights.core.Light
 import com.arclights.musiclights.core.LightRig
-import com.arclights.musiclights.core.listeners.LIGHT_UPDATE
-import com.arclights.musiclights.core.listeners.LightChangeListener
+import com.arclights.musiclights.core.listeners.FREQUENCY_UPDATE
+import com.arclights.musiclights.core.listeners.FrequencyChangeListener
 import javafx.scene.canvas.Canvas
 import javafx.scene.paint.Color
 import java.beans.PropertyChangeEvent
-import java.util.*
+import java.util.Arrays
 import kotlin.math.min
 
 
 class FrequencyView(
-        private val lightRig: LightRig,
-        private val lightNbr: Int,
+        light: Light,
         private val color: Color
-) : LightChangeListener, Canvas() {
-    private val HEIGHT = 200.0
+) : FrequencyChangeListener, Canvas() {
+
+    companion object {
+        private const val HEIGHT = 200.0
+    }
+
     private val scaleFactor = (HEIGHT / LightRig.MAX_AMPLITUDE).toFloat()
 
     init {
         height = HEIGHT
-        lightRig.addLightChangeListener(this)
+        light.addFrequencyChangerListener(this)
     }
 
-    private fun draw() {
-        val spikeWidth = width / spectrumSize()
+    private fun draw(frequencyValues: FloatArray) {
+        val spikeWidth = width / frequencyValues.size
 
         graphicsContext2D.fill = Color.BLACK
         graphicsContext2D.fillRect(0.0, 0.0, width, height)
 
         graphicsContext2D.fill = color
-        (spectrumStart()..spectrumEnd()).forEachIndexed { spikeNbr, spectrumIndex ->
-            val frequencyAmplitude = lightRig.getBand(spectrumIndex)
+        frequencyValues.forEachIndexed { spikeNbr, frequencyAmplitude ->
             graphicsContext2D.fillRect(
                     spikeNbr * spikeWidth,
                     height - scaleAmplitude(frequencyAmplitude),
@@ -44,16 +47,9 @@ class FrequencyView(
     private fun scaleAmplitude(amplitude: Float) = min(amplitude * scaleFactor, LightRig.MAX_AMPLITUDE)
 
     override fun propertyChange(evt: PropertyChangeEvent?) {
-        if(evt?.propertyName == LIGHT_UPDATE){
-            draw()
+        if (evt?.propertyName == FREQUENCY_UPDATE) {
+            println(Arrays.toString(evt.newValue as FloatArray))
+            draw(evt.newValue as FloatArray)
         }
     }
-
-    @Deprecated("Get from Light object instead", ReplaceWith("light.?"))
-    private fun spectrumStart() = lightRig.spectrumSize / 2 / 10 * lightNbr
-
-    @Deprecated("Get from Light object instead", ReplaceWith("light.?"))
-    private fun spectrumEnd() = lightRig.spectrumSize / 2 / 10 * (lightNbr + 1)
-
-    private fun spectrumSize() = spectrumEnd() - spectrumStart()
 }

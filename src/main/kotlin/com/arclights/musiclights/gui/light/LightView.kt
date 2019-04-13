@@ -1,28 +1,29 @@
 package com.arclights.musiclights.gui.light
 
-import com.arclights.musiclights.core.LightRig
+import com.arclights.musiclights.core.Light
 import com.arclights.musiclights.core.listeners.LIGHT_UPDATE
 import com.arclights.musiclights.core.listeners.LightChangeListener
 import javafx.scene.canvas.Canvas
 import javafx.scene.paint.Color
 import java.beans.PropertyChangeEvent
 
-data class LightView(
-        private val color: Color,
-        private val index: Int,
-        private val lightRig: LightRig
+class LightView(
+        light: Light,
+        private val color: Color
 ) : LightChangeListener, Canvas() {
 
-    private val HEIGHT = 100.0
+    companion object {
+        private const val HEIGHT = 100.0
+    }
 
     init {
         height = HEIGHT
-        lightRig.addLightChangeListener(this)
+        light.addLightChangeListener(this)
     }
 
     override fun propertyChange(evt: PropertyChangeEvent?) {
         if (evt?.propertyName == LIGHT_UPDATE) {
-            draw((evt.newValue as FloatArray)[index].toDouble())
+            draw((evt.newValue as Float).toDouble())
         }
     }
 

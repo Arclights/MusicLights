@@ -14,17 +14,16 @@ import javafx.stage.Stage
 import javafx.util.Duration
 
 class MainWindow : Application() {
-    private val colors = arrayOf(Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE, Color.ORANGE, Color.ORANGE,
-            Color.BLUE, Color.YELLOW, Color.GREEN, Color.RED)
+    private val colors = arrayOf(Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE, Color.ORANGE)
 
     private val drawFrequencyPerSecond = 24
 
-    val lightRig = LightRig(10)
+    private val lightRig = LightRig(10)
 
-    val timeline = Timeline(
+    private val timeline = Timeline(
             KeyFrame(
                     Duration.seconds(0.0),
-                    EventHandler { _ -> lightRig.update() }
+                    EventHandler { lightRig.update() }
             ),
             KeyFrame(Duration.millis((1000 / drawFrequencyPerSecond).toDouble()))
     )
@@ -36,15 +35,9 @@ class MainWindow : Application() {
 
         val scene = Scene(root)
 
-        // For Arduino
-//        Serial s = new Serial(monitor);
-//        s.initialize();
-//        s.start();
-
         // The controls
-        (0 until lightRig.nbrOfLights).forEach { i ->
-            val control = LightControl(i, lightRig, colors[i])
-            root.add(control, i, 0)
+        lightRig.lights.forEachIndexed { index, light ->
+            root.add(LightControl(light, colors[index % colors.size]), index, 0)
         }
 
         // Master Control
