@@ -48,7 +48,6 @@ class FrequencyView(
 
     override fun propertyChange(evt: PropertyChangeEvent?) {
         if (evt?.propertyName == FREQUENCY_UPDATE) {
-            println(Arrays.toString(evt.newValue as FloatArray))
             draw(evt.newValue as FloatArray)
         }
     }
