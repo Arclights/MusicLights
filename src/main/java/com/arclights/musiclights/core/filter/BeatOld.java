@@ -1,28 +1,29 @@
 package com.arclights.musiclights.core.filter;
 
-import com.arclights.musiclights.core.LightRig;
+import com.arclights.musiclights.core.LightConfig;
 import ddf.minim.AudioInput;
 import ddf.minim.analysis.FFT;
 import java.util.ArrayList;
+import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
-public class BeatOld {
-    // private float[] buffer;
+public class BeatOld implements Filter {
     private final float sense = (float) 2;
-    // private final double avrageConst = 0.02321995464852607709750566893424;
-    private LightRig lightRig;
+    private LightConfig config;
     private float[][] E;
     private int nbrOfSubbands;
-    private final float subbandConst = (float) 0.03125;
+    private final int nbrOfLights;
 
-    public BeatOld(AudioInput in, LightRig lightRig) {
-        // buffer = new float[43];
-        this.lightRig = lightRig;
+    public BeatOld(LightConfig config, int nbrOfLights) {
+        this.config = config;
+        this.nbrOfLights = nbrOfLights;
         E = new float[32][43];
         nbrOfSubbands = 32;
     }
 
-    public ArrayList<Float> filter(FFT fft, int nbrOfLights) {
-        // float level = 255;
+    @NotNull
+    @Override
+    public List<Float> filter(@NotNull FFT fft, @NotNull AudioInput input) {
         float[] Es = new float[nbrOfSubbands];
         for (int i = 0; i < nbrOfSubbands; i++) {
             float sum = 0;
@@ -45,7 +46,7 @@ public class BeatOld {
             }
             if (Es[largestAmpInGroupIndex] > sense
                     * getAvrageBufferEnergy(largestAmpInGroupIndex)) {
-                if (lightRig.getConfig().getBeatWithLevels()) {
+                if (config.getBeatWithLevels()) {
                     res.add(Es[largestAmpInGroupIndex]);
                 } else {
                     res.add((float) 1);
@@ -75,43 +76,5 @@ public class BeatOld {
         for (int i = nbrOfSubbands - 1; i > 0; i--) {
             E[band][i] = E[band][i - 1];
         }
-    }
-
-
-//    private double getSense() {
-//        double res = 0;
-//        for (int i = 0; i < 43; i++) {
-//            // System.out.println(buffer[i]
-//            +"\t" + getAvrageBufferEnergy() + "\t" + (buffer[i] -
-//                    getAvrageBufferEnergy()));
-//            res += Math.pow(buffer[i] - getAvrageBufferEnergy(), 2);
-//        }
-//        System.out.println(res / 43);
-//        return (-0.0025714 * res / 43) + 1.5142857;
-//    }
-//
-//    private void shiftBuffer() {
-//        for (int i = 42; i > 0; i--) {
-//            buffer[i] = buffer[i - 1];
-//        }
-//    }
-//
-//    private float getAvrageBufferEnergy() {
-//        float bufferSum = 0;
-//        for (int i = 0; i < 43; i++) {
-//            bufferSum += Math.pow(buffer[i], 1);
-//        }
-//
-//        return (float) (bufferSum * avrageConst);
-//    }
-
-    // Tests
-    private String printArray(float[] array) {
-        String res = "[";
-        for (float f : array) {
-            res += f + ", ";
-        }
-        return res + "]";
-
     }
 }

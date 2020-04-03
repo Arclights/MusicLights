@@ -4,6 +4,7 @@ import com.arclights.musiclights.core.LightConfig
 import com.arclights.musiclights.core.filter.FilterType
 import com.arclights.musiclights.core.filter.FilterType.BEAT_BY_ENERGY
 import com.arclights.musiclights.core.filter.FilterType.BEAT_BY_FREQ
+import com.arclights.musiclights.core.filter.FilterType.BEAT_OLD
 import com.arclights.musiclights.core.filter.FilterType.BY_GROUP
 import com.arclights.musiclights.core.filter.FilterType.BY_GROUP_AVRAGE
 import com.arclights.musiclights.core.filter.FilterType.DIFF
@@ -39,10 +40,12 @@ class FilterChooser(config: LightConfig) : TitledPane() {
         fftByBandRadioButton.toggleGroup = group
         val differenceRadioButton = FilterRadioButton("Difference", true, DIFF, levelBox, config)
         differenceRadioButton.toggleGroup = group
-        val beatByFreqRadioButton = FilterRadioButton("BeatByFrequency", false, BEAT_BY_FREQ, levelBox, config)
+        val beatByFreqRadioButton = FilterRadioButton("Beat by frequency", false, BEAT_BY_FREQ, levelBox, config)
         beatByFreqRadioButton.toggleGroup = group
-        val beatByEnergyRadioButton = FilterRadioButton("BeatByEnergy", false, BEAT_BY_ENERGY, levelBox, config)
+        val beatByEnergyRadioButton = FilterRadioButton("Beat by energy", false, BEAT_BY_ENERGY, levelBox, config)
         beatByEnergyRadioButton.toggleGroup = group
+        val beatOldRadioButton = FilterRadioButton("Beat old", false, BEAT_OLD, levelBox, config)
+        beatOldRadioButton.toggleGroup = group
 
         filters.add(byGroupRadioButton, 0, 0)
         filters.add(byGroupAverageRadioButton, 1, 0)
@@ -51,7 +54,8 @@ class FilterChooser(config: LightConfig) : TitledPane() {
         filters.add(differenceRadioButton, 0, 2, 1, 2)
         filters.add(beatByFreqRadioButton, 1, 2)
         filters.add(beatByEnergyRadioButton, 1, 3)
-        filters.add(levelBox, 1, 4)
+        filters.add(beatOldRadioButton, 1, 4)
+        filters.add(levelBox, 1, 5)
 
         content = filters
     }
