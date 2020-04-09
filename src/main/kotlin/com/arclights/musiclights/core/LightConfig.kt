@@ -15,14 +15,14 @@ import com.arclights.musiclights.core.filter.Filter
 import com.arclights.musiclights.core.filter.FilterType
 
 class LightConfig(
-        nbrOfLights: Int,
-        bufferSize: Int,
-        sampleRate: Float,
-        specSize: Int
+    nbrOfLights: Int,
+    bufferSize: Int,
+    sampleRate: Float,
+    specSize: Int
 ) {
     var masterLevel = 5f
     var filter = FilterType.BY_GROUP
-    var useAdapAmp: Boolean = false
+    var useAdaptiveAmp: Boolean = false
     var beatWithLevels: Boolean = false
 
     private val byGroup = ByGroup(nbrOfLights)
@@ -43,13 +43,13 @@ class LightConfig(
         FilterType.BEAT_BY_ENERGY -> beatByEnergy
         FilterType.BEAT_OLD -> beatOld
         FilterType.DIFF -> diff
-        FilterType.BY_GROUP_AVRAGE -> byGroupAverage
+        FilterType.BY_GROUP_AVERAGE -> byGroupAverage
         FilterType.FFT_LARGEST -> fftFilterLargest
         FilterType.FFT_BY_BAND -> fftFilterByBand
         FilterType.ALT_BASS -> TODO()
     }
 
-    fun getAmplifier(): Amplifier = if (useAdapAmp) {
+    fun getAmplifier(): Amplifier = if (useAdaptiveAmp) {
         adaptiveAmplifier
     } else {
         constantAmplifier

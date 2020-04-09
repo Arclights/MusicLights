@@ -11,14 +11,14 @@ class Diff(private val nbrOfGroups: Int, specSize: Int) : Filter {
         val spectrumWidth = fft.specSize() / 2
         val bandsPerGroup = spectrumWidth / nbrOfGroups
         return (0 until nbrOfGroups)
-                .map {
-                    var level = 0.0f
-                    (it * bandsPerGroup until (it + 1) * bandsPerGroup)
-                            .forEach {
-                                level = if (fft.getBand(it) > prevLevel[it]) LightRig.MAX_AMPLITUDE else level
-                                prevLevel[it] = fft.getBand(it)
-                            }
-                    level
-                }
+            .map {
+                var level = 0.0f
+                (it * bandsPerGroup until (it + 1) * bandsPerGroup)
+                    .forEach { band ->
+                        level = if (fft.getBand(band) > prevLevel[band]) LightRig.MAX_AMPLITUDE else level
+                        prevLevel[band] = fft.getBand(band)
+                    }
+                level
+            }
     }
 }

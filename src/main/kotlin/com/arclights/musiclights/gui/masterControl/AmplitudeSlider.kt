@@ -40,7 +40,7 @@ class AmplitudeSlider(config: LightConfig) : TitledPane() {
 class ResetButton(amplitudeSlider: AmplitudeSlider) : Button() {
     init {
         text = "Reset"
-        onAction = EventHandler { _ -> amplitudeSlider.reset() }
+        onAction = EventHandler { amplitudeSlider.reset() }
         GridPane.setHalignment(this, HPos.CENTER)
     }
 }

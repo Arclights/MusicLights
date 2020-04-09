@@ -9,14 +9,14 @@ class FFTFilterByBand(private val nbrOfGroups: Int) : Filter {
         val bandsPerGroup = spectrumWidth / nbrOfGroups
         var lastBandLastFreq = 0
         return (0 until nbrOfGroups)
-                .map {
-                    val largestForCurrentSection =
-                            (lastBandLastFreq until lastBandLastFreq + bandsPerGroup)
-                                    .map { fft.getBand(it) }
-                                    .max()!!
-                    lastBandLastFreq += bandsPerGroup
-                    largestForCurrentSection
-                }
+            .map {
+                val largestForCurrentSection =
+                    (lastBandLastFreq until lastBandLastFreq + bandsPerGroup)
+                        .map { fft.getBand(it) }
+                        .max()!!
+                lastBandLastFreq += bandsPerGroup
+                largestForCurrentSection
+            }
     }
 
 }

@@ -12,7 +12,7 @@ repositories {
     }
 }
 
-dependencies{
+dependencies {
     compile group: 'net.compartmental.code', name: 'minim', version: '2.2.2'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }

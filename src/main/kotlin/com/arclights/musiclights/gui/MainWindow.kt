@@ -21,11 +21,11 @@ class MainWindow : Application() {
     private val lightRig = LightRig(10)
 
     private val timeline = Timeline(
-            KeyFrame(
-                    Duration.seconds(0.0),
-                    EventHandler { lightRig.update() }
-            ),
-            KeyFrame(Duration.millis((1000 / drawFrequencyPerSecond).toDouble()))
+        KeyFrame(
+            Duration.seconds(0.0),
+            EventHandler { lightRig.update() }
+        ),
+        KeyFrame(Duration.millis((1000 / drawFrequencyPerSecond).toDouble()))
     )
 
     override fun start(primaryStage: Stage) {

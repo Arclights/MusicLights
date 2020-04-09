@@ -61,10 +61,12 @@ class LightRig(val nbrOfLights: Int) {
         minim.stop()
     }
 
+    @SuppressWarnings
     fun sketchPath(fileName: String): String {
         return ""
     }
 
+    @SuppressWarnings
     @Throws(FileNotFoundException::class)
     fun createInput(fileName: String): InputStream {
         return FileInputStream(fileName)

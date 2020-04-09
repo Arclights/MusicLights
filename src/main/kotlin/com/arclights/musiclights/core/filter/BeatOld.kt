@@ -10,11 +10,11 @@ class BeatOld(
 ) : Filter {
     private val sense: Float = 2F
     private val E: Array<FloatArray> = Array(32) { FloatArray(43) }
-    private val nbrOfSubbands: Int = 32
+    private val nbrOfSubBands: Int = 32
     private val bandsPerGroup: Int = (32 / nbrOfLights)
 
     override fun filter(fft: FFT, input: AudioInput): List<Float> {
-        val Es: List<Float> = (0 until nbrOfSubbands).map { subBand ->
+        val es: List<Float> = (0 until nbrOfSubBands).map { subBand ->
             (subBand * 16 until (subBand + 1) * 16)
                 .map { k -> fft.getBand(k) }
                 .sum()
@@ -23,7 +23,7 @@ class BeatOld(
 
         val res: List<Float> = (0 until nbrOfLights).map { lightNbr ->
             val (largestAmpInGroupIndex, largestAmpInGroup) = (lightNbr * bandsPerGroup until (lightNbr + 1) * bandsPerGroup)
-                .map { it to Es[it] }
+                .map { it to es[it] }
                 .maxBy { it.second } ?: 0 to 0F
 
             if (largestAmpInGroup > sense * getAverageBufferEnergy(largestAmpInGroupIndex)) {
@@ -39,7 +39,7 @@ class BeatOld(
 
         (0 until 32).forEach { i ->
             shiftBuffer(i)
-            E[i][0] = Es[i]
+            E[i][0] = es[i]
         }
 
         return res
@@ -47,5 +47,5 @@ class BeatOld(
 
     private fun getAverageBufferEnergy(band: Int): Float = E[band].sum().div(43)
 
-    private fun shiftBuffer(band: Int) = (nbrOfSubbands - 1 downTo 1).forEach { i -> E[band][i] = E[band][i - 1] }
+    private fun shiftBuffer(band: Int) = (nbrOfSubBands - 1 downTo 1).forEach { i -> E[band][i] = E[band][i - 1] }
 }

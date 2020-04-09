@@ -8,8 +8,8 @@ import javafx.scene.paint.Color
 import java.beans.PropertyChangeEvent
 
 class LightView(
-        light: Light,
-        private val color: Color
+    light: Light,
+    private val color: Color
 ) : LightChangeListener, Canvas() {
 
     companion object {
@@ -27,7 +27,7 @@ class LightView(
         }
     }
 
-    fun draw(level: Double) {
+    private fun draw(level: Double) {
         draw(Color.BLACK, 1.0)
         draw(color, level)
     }

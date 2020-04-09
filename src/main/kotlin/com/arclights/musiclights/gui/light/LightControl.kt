@@ -67,7 +67,8 @@ class AmplificationSlider(light: Light) : TitledPane() {
         slider.isShowTickMarks = true
         slider.isShowTickLabels = true
         slider.orientation = Orientation.VERTICAL
-        slider.valueProperty().addListener { _, _, newVal -> light.setIndividualAdjustmentLevel(newVal.toFloat() * 0.1f) }
+        slider.valueProperty()
+            .addListener { _, _, newVal -> light.setIndividualAdjustmentLevel(newVal.toFloat() * 0.1f) }
 
         val box = VBox()
         box.children.addAll(ResetButton(slider), slider)

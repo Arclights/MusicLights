@@ -4,7 +4,18 @@ import com.arclights.musiclights.core.LightRig
 import ddf.minim.analysis.FFT
 
 class AdaptiveAmplifier(private val nbrOfGroups: Int) : Amplifier {
-    private val noiseLine = doubleArrayOf(454.1341, 985.9705, 936.9573, 2589.1023, 2526.0164, 4455.165, 3321.9583, 4226.0024, 10840.993, 11465.399)
+    private val noiseLine = doubleArrayOf(
+        454.1341,
+        985.9705,
+        936.9573,
+        2589.1023,
+        2526.0164,
+        4455.165,
+        3321.9583,
+        4226.0024,
+        10840.993,
+        11465.399
+    )
 
     private val levelers = FloatArray(nbrOfGroups) { 0.0f }
 
@@ -15,8 +26,8 @@ class AdaptiveAmplifier(private val nbrOfGroups: Int) : Amplifier {
             val startBand = it * bandsPerGroup
             val endBand = startBand + bandsPerGroup
             val largestAmpInGroup = (startBand until endBand)
-                    .map { fft.getBand(it) }
-                    .max()!!
+                .map(fft::getBand)
+                .max()!!
 
             val normalizedAmpInGroup = LightRig.MAX_AMPLITUDE / largestAmpInGroup
             if (normalizedAmpInGroup < levelers[it]) {

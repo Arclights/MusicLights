@@ -7,13 +7,12 @@ import com.arclights.musiclights.core.listeners.FrequencyChangeListener
 import javafx.scene.canvas.Canvas
 import javafx.scene.paint.Color
 import java.beans.PropertyChangeEvent
-import java.util.Arrays
 import kotlin.math.min
 
 
 class FrequencyView(
-        light: Light,
-        private val color: Color
+    light: Light,
+    private val color: Color
 ) : FrequencyChangeListener, Canvas() {
 
     companion object {
@@ -36,10 +35,10 @@ class FrequencyView(
         graphicsContext2D.fill = color
         frequencyValues.forEachIndexed { spikeNbr, frequencyAmplitude ->
             graphicsContext2D.fillRect(
-                    spikeNbr * spikeWidth,
-                    height - scaleAmplitude(frequencyAmplitude),
-                    spikeWidth,
-                    height
+                spikeNbr * spikeWidth,
+                height - scaleAmplitude(frequencyAmplitude),
+                spikeWidth,
+                height
             )
         }
     }

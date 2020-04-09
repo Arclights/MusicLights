@@ -1,4 +1,4 @@
-package com.arclights.musiclights.core.amplification;
+package com.arclights.musiclights.core.amplification
 
 import ddf.minim.analysis.FFT
 

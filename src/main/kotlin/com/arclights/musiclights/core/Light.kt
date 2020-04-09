@@ -9,8 +9,8 @@ import ddf.minim.analysis.FFT
 import java.beans.PropertyChangeSupport
 
 class Light(
-        private val fft: FFT,
-        private val lightNbr: Int
+    private val fft: FFT,
+    private val lightNbr: Int
 ) {
     private val spectrumStart = fft.specSize() / 2 / 10 * lightNbr
     private val spectrumEnd = fft.specSize() / 2 / 10 * (lightNbr + 1)

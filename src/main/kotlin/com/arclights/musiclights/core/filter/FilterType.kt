@@ -7,7 +7,7 @@ enum class FilterType {
     BEAT_OLD,
     ALT_BASS,
     DIFF,
-    BY_GROUP_AVRAGE,
+    BY_GROUP_AVERAGE,
     FFT_LARGEST,
     FFT_BY_BAND
 }

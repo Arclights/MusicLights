@@ -8,10 +8,10 @@ class ByGroupAverage(private val nbrOfGroups: Int) : Filter {
         val spectrumWidth = fft.specSize() / 2
         val bandsPerGroup = spectrumWidth / nbrOfGroups
         return (0 until nbrOfGroups)
-                .map {
-                    (it * bandsPerGroup until (it + 1) * bandsPerGroup)
-                            .map { fft.getBand(it) }
-                            .sum() / bandsPerGroup
-                }
+            .map {
+                (it * bandsPerGroup until (it + 1) * bandsPerGroup)
+                    .map(fft::getBand)
+                    .sum() / bandsPerGroup
+            }
     }
 }

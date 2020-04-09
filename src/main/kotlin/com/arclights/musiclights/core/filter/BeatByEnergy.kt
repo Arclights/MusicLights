@@ -12,11 +12,11 @@ class BeatByEnergy(private val nbrOfLights: Int) : Filter {
         beatDetector.detect(input.mix)
         val bandsPerLight = beatDetector.detectSize() / nbrOfLights
         return (0 until nbrOfLights)
-                .map {
-                    if (beatDetector.isRange(it * bandsPerLight, (it + 1) * bandsPerLight - 1, 2))
-                        LightRig.MAX_AMPLITUDE
-                    else
-                        0.0f
-                }
+            .map {
+                if (beatDetector.isRange(it * bandsPerLight, (it + 1) * bandsPerLight - 1, 2))
+                    LightRig.MAX_AMPLITUDE
+                else
+                    0.0f
+            }
     }
 }

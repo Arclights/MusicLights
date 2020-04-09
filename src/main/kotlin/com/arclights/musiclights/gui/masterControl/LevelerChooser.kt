@@ -25,25 +25,25 @@ class LevelerChooser(stage: Stage, lightRig: LightRig) : TitledPane() {
         val openFileButton = OpenFileButton(stage, lightRig.config)
 
         val fromFile = LevelerRadioButton(
-                "From file",
-                false,
-                true,
-                false,
-                resetAdaptiveAmpButton,
-                openFileButton,
-                lightRig.config
+            text = "From file",
+            useAdaptiveAmplification = false,
+            disableResetButton = true,
+            disableOpenFileButton = false,
+            resetAdaptiveAmpButton = resetAdaptiveAmpButton,
+            openFileButton = openFileButton,
+            config = lightRig.config
         )
         fromFile.isSelected = true
         fromFile.toggleGroup = group
 
         val adaptiveAmplification = LevelerRadioButton(
-                "Adaptive Amplifier",
-                true,
-                false,
-                true,
-                resetAdaptiveAmpButton,
-                openFileButton,
-                lightRig.config
+            text = "Adaptive Amplifier",
+            useAdaptiveAmplification = true,
+            disableResetButton = false,
+            disableOpenFileButton = true,
+            resetAdaptiveAmpButton = resetAdaptiveAmpButton,
+            openFileButton = openFileButton,
+            config = lightRig.config
         )
         adaptiveAmplification.toggleGroup = group
 
@@ -59,18 +59,18 @@ class LevelerChooser(stage: Stage, lightRig: LightRig) : TitledPane() {
 }
 
 class LevelerRadioButton(
-        text: String,
-        useAdaptiveAmplification: Boolean,
-        disableResetButton: Boolean,
-        disableOpenFileButton: Boolean,
-        resetAdaptiveAmpButton: ResetAdaptiveAmpButton,
-        openFileButton: OpenFileButton,
-        config: LightConfig
+    text: String,
+    useAdaptiveAmplification: Boolean,
+    disableResetButton: Boolean,
+    disableOpenFileButton: Boolean,
+    resetAdaptiveAmpButton: ResetAdaptiveAmpButton,
+    openFileButton: OpenFileButton,
+    config: LightConfig
 ) : RadioButton() {
     init {
         this.text = text
         onAction = EventHandler {
-            config.useAdapAmp = useAdaptiveAmplification
+            config.useAdaptiveAmp = useAdaptiveAmplification
             resetAdaptiveAmpButton.isDisable = disableResetButton
             openFileButton.isDisable = disableOpenFileButton
         }
@@ -85,7 +85,7 @@ class ResetAdaptiveAmpButton(lightRig: LightRig) : Button() {
     }
 }
 
-class OpenFileButton(stage: Stage,config: LightConfig) : Button() {
+class OpenFileButton(stage: Stage, config: LightConfig) : Button() {
     init {
         text = "Open"
         onAction = EventHandler {
@@ -104,13 +104,13 @@ class OpenFileButton(stage: Stage,config: LightConfig) : Button() {
             when (this) {
                 null -> return
                 else -> {
-                    this.bufferedReader().useLines {
-                        it
-                                .first()
-                                .substring(1, it.first().length - 1)
-                                .split(",")
-                                .map { it.toFloat() }
-                                .let { config.setAmpLeveler(it.toFloatArray()) }
+                    this.bufferedReader().useLines { lines ->
+                        lines
+                            .first()
+                            .substring(1, lines.first().length - 1)
+                            .split(",")
+                            .map(String::toFloat)
+                            .let { config.setAmpLeveler(it.toFloatArray()) }
                     }
                 }
             }

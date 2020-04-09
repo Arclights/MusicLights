@@ -1,4 +1,4 @@
-package com.arclights.musiclights.tool;
+package com.arclights.musiclights.tool
 
 import ddf.minim.AudioInput
 import ddf.minim.Minim
@@ -14,8 +14,6 @@ import javafx.scene.layout.GridPane
 import javafx.scene.paint.Color
 import javafx.stage.Stage
 import javafx.util.Duration
-import java.io.FileInputStream
-import java.io.InputStream
 
 class AnalyseFreq : Application() {
     lateinit var minim: Minim
@@ -120,7 +118,4 @@ class AnalyseFreq : Application() {
         super.stop()
     }
 
-    fun sketchPath(fileName: String): String = ""
-
-    fun createInput(fileName: String): InputStream = FileInputStream(fileName)
 }

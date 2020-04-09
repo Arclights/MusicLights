@@ -5,8 +5,8 @@ import javafx.scene.layout.GridPane
 import javafx.stage.Stage
 
 class MasterControl(
-        lightRig: LightRig,
-        stage: Stage
+    lightRig: LightRig,
+    stage: Stage
 ) : GridPane() {
 
     init {
