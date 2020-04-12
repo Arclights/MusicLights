@@ -41,7 +41,7 @@ class MainWindow : Application() {
         }
 
         // Master Control
-        val masterControl = MasterControl(lightRig, primaryStage)
+        val masterControl = MasterControl(lightRig.config, primaryStage)
         root.add(masterControl, lightRig.nbrOfLights, 0)
 
         timeline.cycleCount = Timeline.INDEFINITE

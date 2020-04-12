@@ -12,7 +12,7 @@ import javafx.scene.layout.GridPane
 import javafx.stage.FileChooser
 import javafx.stage.Stage
 
-class LevelerChooser(stage: Stage, lightRig: LightRig) : TitledPane() {
+class LevelerChooser(stage: Stage, config: LightConfig) : TitledPane() {
     init {
         text = "Amplifier Leveler"
         isCollapsible = false
@@ -21,8 +21,8 @@ class LevelerChooser(stage: Stage, lightRig: LightRig) : TitledPane() {
 
         val group = ToggleGroup()
 
-        val resetAdaptiveAmpButton = ResetAdaptiveAmpButton(lightRig)
-        val openFileButton = OpenFileButton(stage, lightRig.config)
+        val resetAdaptiveAmpButton = ResetAdaptiveAmpButton(config)
+        val openFileButton = OpenFileButton(stage, config)
 
         val fromFile = LevelerRadioButton(
             text = "From file",
@@ -31,7 +31,7 @@ class LevelerChooser(stage: Stage, lightRig: LightRig) : TitledPane() {
             disableOpenFileButton = false,
             resetAdaptiveAmpButton = resetAdaptiveAmpButton,
             openFileButton = openFileButton,
-            config = lightRig.config
+            config = config
         )
         fromFile.isSelected = true
         fromFile.toggleGroup = group
@@ -43,7 +43,7 @@ class LevelerChooser(stage: Stage, lightRig: LightRig) : TitledPane() {
             disableOpenFileButton = true,
             resetAdaptiveAmpButton = resetAdaptiveAmpButton,
             openFileButton = openFileButton,
-            config = lightRig.config
+            config = config
         )
         adaptiveAmplification.toggleGroup = group
 
@@ -77,11 +77,11 @@ class LevelerRadioButton(
     }
 }
 
-class ResetAdaptiveAmpButton(lightRig: LightRig) : Button() {
+class ResetAdaptiveAmpButton(config: LightConfig) : Button() {
     init {
         text = "Reset"
         isDisable = true
-        onAction = EventHandler { lightRig.resetAdaptiveAmp(true) }
+        onAction = EventHandler { config.getAmplifier().reset() }
     }
 }
 
