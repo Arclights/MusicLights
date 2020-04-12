@@ -17,9 +17,9 @@ class AdaptiveAmplifier(private val nbrOfGroups: Int) : Amplifier {
         11465.399
     )
 
-    private val levelers = FloatArray(nbrOfGroups) { 0.0f }
+    private val levelers = MutableList(nbrOfGroups) { 0.0f }
 
-    override fun update(fft: FFT) {
+    override fun update(fft: FFT): List<Float> {
         val spectrumWidth = fft.specSize() / 2
         val bandsPerGroup = spectrumWidth / nbrOfGroups
         (0 until nbrOfGroups).forEach {
@@ -36,9 +36,9 @@ class AdaptiveAmplifier(private val nbrOfGroups: Int) : Amplifier {
                 levelers[it] = normalizedAmpInGroup
             }
         }
-    }
 
-    override fun getLevel(index: Int): Float = levelers[index]
+        return levelers
+    }
 
     override fun reset() = levelers.fill(0.0f)
 

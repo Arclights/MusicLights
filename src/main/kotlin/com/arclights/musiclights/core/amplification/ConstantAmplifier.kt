@@ -4,13 +4,9 @@ import ddf.minim.analysis.FFT
 
 class ConstantAmplifier(nbrOfLights: Int) : Amplifier {
 
-    private val levels: FloatArray = FloatArray(nbrOfLights) { 1f }
+    private val levels = MutableList(nbrOfLights) { 1f }
 
-    override fun update(fft: FFT) {
-        // Do nothing
-    }
-
-    override fun getLevel(index: Int): Float = levels[index]
+    override fun update(fft: FFT): List<Float> = levels
 
     override fun reset() = levels.fill(1f)
 

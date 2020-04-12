@@ -1,6 +1,5 @@
 package com.arclights.musiclights.core
 
-import com.arclights.musiclights.core.amplification.Amplifier
 import com.arclights.musiclights.core.listeners.FREQUENCY_UPDATE
 import com.arclights.musiclights.core.listeners.FrequencyChangeListener
 import com.arclights.musiclights.core.listeners.LIGHT_UPDATE
@@ -33,11 +32,11 @@ class Light(
         propertyChangeSupport.addPropertyChangeListener(listener)
     }
 
-    fun updateLevel(masterLevel: Float, filterLevels: List<Float>, amplifier: Amplifier) {
+    fun updateLevel(lightState: List<Float>) {
         val tempLevel = level
         val tempSpectrum = spectrumValues.copyOf()
         if (isPoweredOn) {
-            level = filterLevels[lightNbr] * masterLevel * individualAdjustmentLevel * amplifier.getLevel(lightNbr)
+            level = lightState[lightNbr] * individualAdjustmentLevel
             updateSpectrumValues()
         } else {
             level = 0.0f
